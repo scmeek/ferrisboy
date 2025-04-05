@@ -13,6 +13,11 @@
 Ensure you have the following installed:
 
 - [Rust](https://www.rust-lang.org/tools/install) (latest stable version) and `cargo`
+- Set up development environment
+  - `make deps`
+  - `cargo build`
+
+All project targets are through `Make` and `cargo`.
 
 ### Build and Run
 
