@@ -20,8 +20,8 @@ set -eu
 #
 # This file is intended to closely follow a format/lint/test CI/CD step.
 
-REMOTE="$1"
-URL="$2"
+REMOTE="${1:-}"
+URL="${2:-}"
 
 # ANSI color codes for styling
 RED='\033[0;31m'
@@ -52,7 +52,7 @@ fail() {
   exit 1
 }
 
-if [[ -n $(git status --porcelain) ]]; then
+if [ "${SKIP_UNCOMMITTED_CHECK:-false}" != "true" ] && [ -n "$(git status --porcelain)" ]; then
   fail "You have uncommitted changes. Please commit or stash them before proceeding."
 fi
 

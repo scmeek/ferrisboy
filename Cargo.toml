@@ -39,4 +39,3 @@ transmute_int_to_char = "deny"    # Prevent unsafe transmutation from integers t
 transmute_int_to_float = "deny"   # Prevent unsafe transmutation from integers to floats
 transmute_ptr_to_ref = "deny"     # Prevent unsafe transmutation from pointers to references
 transmute_undefined_repr = "deny" # Detect transmutes with potentially undefined representations
-

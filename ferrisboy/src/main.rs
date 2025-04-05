@@ -14,16 +14,16 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 }
 
-fn run(args: &Vec<String>) -> Result<u64, Box<dyn Error>> {
+fn run(args: &[String]) -> Result<u64, Box<dyn Error>> {
     let val1 = args
         .get(1)
-        .ok_or_else(|| "Please enter a number")?
+        .ok_or("Please enter a number")?
         .parse::<u64>()
         .map_err(|_| "Please enter a number")?;
 
     let val2 = args
         .get(2)
-        .ok_or_else(|| "Please enter a number")?
+        .ok_or("Please enter a number")?
         .parse::<u64>()
         .map_err(|_| "Please enter a number")?;
 
