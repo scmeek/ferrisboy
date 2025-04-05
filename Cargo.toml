@@ -2,11 +2,24 @@
 resolver = "2"
 members = ["ferrisboy", "ferrisboy_core"]
 
-[workspace.lint]
-arithmetic_overflow = "deny" # Prevent operations that would cause integer overflow
+[workspace.lints.clippy]
+warnings = "deny"
+panic = "deny"
 
-[workspace.lint.clippy]
+# Style and clarity
+wildcard_imports = "deny"
+needless_borrow = "deny"
+clone_on_ref_ptr = "deny"
+redundant_clone = "deny"
+
+# Performance
+unnecessary_to_owned = "deny"
+inefficient_to_string = "deny"
+large_enum_variant = "deny"
+map_clone = "deny"
+
 # Arithmetic
+arithmetic_overflow = "deny"            # Prevent operations that would cause integer overflow
 checked_conversions = "deny"            # Suggest using checked conversions between numeric types
 cast_possible_truncation = "deny"       # Detect when casting might truncate a value
 cast_sign_loss = "deny"                 # Detect when casting might lose sign information
