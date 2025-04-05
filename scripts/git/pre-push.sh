@@ -56,10 +56,12 @@ if [ "${SKIP_UNCOMMITTED_CHECK:-false}" != "true" ] && [ -n "$(git status --porc
   fail "You have uncommitted changes. Please commit or stash them before proceeding."
 fi
 
-export RUSTFLAGS="-Dwarnings"
-SCOPE="--all-targets --all-features"
+export RUSTFLAGS="-D warnings"
+RUST_SCOPE="--all-targets --all-features"
+export RUSTDOCFLAGS="-D warnings"
+RUST_DOC_SCOPE="--all-features"
 
-CHECK_CMD="cargo check $SCOPE"
+CHECK_CMD="cargo check $RUST_SCOPE"
 info "Checking code compilation with \`$CHECK_CMD\`..."
 if ! $CHECK_CMD; then
   fail "Code did not compile. Run \`$CHECK_CMD\` and fix issues."
@@ -73,19 +75,26 @@ if ! $FMT_CMD; then
 fi
 success "Code is properly formatted."
 
-CLIPPY_CMD="cargo clippy $SCOPE"
+CLIPPY_CMD="cargo clippy $RUST_SCOPE"
 info "Running clippy linter with \`$CLIPPY_CMD\`..."
 if ! $CLIPPY_CMD; then
   fail "Clippy found issues. Run \`$CLIPPY_CMD\` and fix issues."
 fi
 success "Clippy linter passed."
 
-TEST_CMD="cargo test $SCOPE"
+TEST_CMD="cargo test $RUST_SCOPE"
 info "Running tests with \`$TEST_CMD\`..."
 if ! $TEST_CMD; then
   fail "Tests failed. Run \`$TEST_CMD\` and fix issues."
 fi
 success "All tests passed."
+
+DOC_CMD="cargo doc --no-deps $RUST_DOC_SCOPE"
+info "Generating documentation with \`$DOC_CMD\`..."
+if ! $DOC_CMD; then
+  fail "Documentation generation failed. Run \`$DOC_CMD\` and fix issues."
+fi
+success "Documentation generated successfully."
 
 echo ""
 final_success "Pre-push checks passed. Proceeding with push."
