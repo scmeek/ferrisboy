@@ -31,11 +31,11 @@ MAGENTA='\033[0;35m'
 NC='\033[0m' # No Color
 
 info() {
-  echo "${YELLOW}==> $1${NC}"
+  echo "${MAGENTA}==> $1${NC}"
 }
 
 warn() {
-  echo "${MAGENTA}🚨 $1${NC}"
+  echo "${YELLOW}🚨 $1${NC}"
 }
 
 success() {
