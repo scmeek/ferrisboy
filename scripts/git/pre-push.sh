@@ -52,6 +52,10 @@ fail() {
   exit 1
 }
 
+if [[ -n $(git status --porcelain) ]]; then
+  fail "You have uncommitted changes. Please commit or stash them before proceeding."
+fi
+
 export RUSTFLAGS="-Dwarnings"
 SCOPE="--all-targets --all-features"
 
