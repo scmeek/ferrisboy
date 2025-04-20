@@ -2,9 +2,29 @@
 resolver = "2"
 members = ["ferrisboy", "ferrisboy_core"]
 
-[workspace.lints.clippy]
+[workspace.package]
+edition = "2024"
+
+categories = ["emulators"]
+keywords = ["retro", "gaming", "emulators", "gameboy", "game boy"]
+license-file = "LICENSE"
+readme = "README.md"
+repository = "https://github.com/scmeek/ferrisboy"
+
+[workspace.lints.rust]
 warnings = "deny"
-panic = "deny"
+
+arithmetic_overflow = "deny" # Prevent operations that would cause integer overflow
+
+[workspace.lints.clippy]
+# Blanket foundation rules
+cargo = { level = "deny", priority = -1 }
+complexity = { level = "deny", priority = -1 }
+correctness = { level = "deny", priority = -1 }
+panic = { level = "deny", priority = -1 }
+perf = { level = "deny", priority = -1 }
+style = { level = "deny", priority = -1 }
+suspicious = { level = "deny", priority = -1 }
 
 # Style and clarity
 wildcard_imports = "deny"
@@ -19,7 +39,6 @@ large_enum_variant = "deny"
 map_clone = "deny"
 
 # Arithmetic
-arithmetic_overflow = "deny"            # Prevent operations that would cause integer overflow
 checked_conversions = "deny"            # Suggest using checked conversions between numeric types
 cast_possible_truncation = "deny"       # Detect when casting might truncate a value
 cast_sign_loss = "deny"                 # Detect when casting might lose sign information
@@ -52,3 +71,13 @@ transmute_int_to_char = "deny"    # Prevent unsafe transmutation from integers t
 transmute_int_to_float = "deny"   # Prevent unsafe transmutation from integers to floats
 transmute_ptr_to_ref = "deny"     # Prevent unsafe transmutation from pointers to references
 transmute_undefined_repr = "deny" # Detect transmutes with potentially undefined representations
+
+# Allowed exceptions
+multiple_crate_versions = "allow" # Can't control dependencies of dependencies
+
+[workspace.dependencies]
+clap = { version = "4", features = ["derive"] }
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+
+ferrisboy_core = { path = "./ferrisboy_core" }

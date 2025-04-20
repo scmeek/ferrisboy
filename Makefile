@@ -19,12 +19,12 @@ h help: ## Display this help message
 d deps: ## Install project dependencies
 	@echo "Linking pre-push git hook..."
 	cd $(MAKEFILE_DIR) && \
-		ln -sf $(SCRIPTS_DIR)/git/pre-push.sh .git/hooks/pre-push
+		ln -sf $(SCRIPTS_DIR)/git-pre-push.sh .git/hooks/pre-push
 	@echo "Linked pre-push git hook"
 
-.PHONY: check-all
-c check-all:  ## Lint
-	SKIP_UNCOMMITTED_CHECK="true" $(SCRIPTS_DIR)/git/pre-push.sh
+.PHONY: lint
+l lint:  ## Lint
+	$(SCRIPTS_DIR)/lint.sh
 
 .PHONY: build
 b build: ## Build project

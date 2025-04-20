@@ -1,7 +1,18 @@
 [package]
 name = "ferrisboy"
+description = "A CLI for the Ferris Boy Game Boy emulator."
 version = "0.1.0"
-edition = "2024"
+edition = { workspace = true }
+
+categories = { workspace = true }
+keywords = { workspace = true }
+license-file = { workspace = true }
+readme = { workspace = true }
+repository = { workspace = true }
+
+[lints]
+workspace = true
 
 [dependencies]
-ferrisboy_core = { version = "0.1.0", path = "../ferrisboy_core" }
+clap = { workspace = true }
+ferrisboy_core = { workspace = true }
