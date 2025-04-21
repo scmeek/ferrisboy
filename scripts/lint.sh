@@ -7,8 +7,12 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/../.." && pwd)}"
 
 . "${SCRIPTS_DIR}/functions.sh"
 
-RUST_SCOPE="--all-targets --all-features"
-RUST_DOC_SCOPE="--all-features"
+if [ -z "${RUST_SCOPE+x}" ]; then
+  RUST_SCOPE="--all-targets --all-features"
+fi
+if [ -z "${RUST_DOC_SCOPE+x}" ]; then
+  RUST_DOC_SCOPE="--all-features"
+fi
 
 CHECK_CMD="cargo check $RUST_SCOPE"
 info "Checking code compilation with \`$CHECK_CMD\`..."
@@ -31,12 +35,16 @@ if ! $CLIPPY_CMD; then
 fi
 success "Clippy linter passed."
 
-TEST_CMD="cargo test $RUST_SCOPE"
-info "Running tests with \`$TEST_CMD\`..."
-if ! $TEST_CMD; then
-  fail "Tests failed. Run \`$TEST_CMD\` and fix issues."
+if [ "${SKIP_TESTS:-false}" != "true" ]; then
+  TEST_CMD="cargo test $RUST_SCOPE"
+  info "Running tests with \`$TEST_CMD\`..."
+  if ! $TEST_CMD; then
+    fail "Tests failed. Run \`$TEST_CMD\` and fix issues."
+  fi
+  success "All tests passed."
+else
+  info "Skipping tests as per SKIP_TESTS=true."
 fi
-success "All tests passed."
 
 DOC_CMD="cargo doc --no-deps $RUST_DOC_SCOPE"
 info "Generating documentation with \`$DOC_CMD\`..."

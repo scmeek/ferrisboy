@@ -1,4 +1,4 @@
-name: Tests
+name: Lints
 
 on:
   push:
@@ -9,7 +9,8 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  RUST_SCOPE: --all-features --all-targets
+  RUST_SCOPE: --all-targets --all-features
+  RUST_DOC_SCOPE: --all-features
 
 jobs:
   build:
@@ -26,8 +27,5 @@ jobs:
 
       - run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
 
-      - name: Build
-        run: cargo build --verbose $RUST_SCOPE
-
-      - name: Run tests
-        run: cargo test --verbose $RUST_SCOPE
+      - name: Lint
+        run: SKIP_TESTS=true ./scripts/lint.sh
