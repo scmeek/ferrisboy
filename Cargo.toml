@@ -4,6 +4,7 @@ members = ["ferrisboy", "ferrisboy_core"]
 
 [workspace.package]
 edition = "2024"
+rust-version = "1.86.0"
 
 categories = ["emulators"]
 keywords = ["retro", "gaming", "emulators", "gameboy", "game boy"]

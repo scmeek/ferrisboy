@@ -3,6 +3,7 @@ name = "ferrisboy"
 description = "A CLI for the Ferris Boy Game Boy emulator."
 version = "0.1.0"
 edition = { workspace = true }
+rust-version = { workspace = true }
 
 categories = { workspace = true }
 keywords = { workspace = true }
