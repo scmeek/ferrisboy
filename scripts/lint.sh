@@ -52,3 +52,11 @@ if ! $DOC_CMD; then
   fail "Documentation generation failed. Run \`$DOC_CMD\` and fix issues."
 fi
 success "Documentation generated successfully."
+
+info "Running semantic versioning check..."
+LAST_DEVELOP_GIT_HASH=$(git rev-parse main)
+SEMVER_CHECK_CMD="cargo semver-checks --all-features --baseline-rev $LAST_DEVELOP_GIT_HASH"
+if ! $SEMVER_CHECK_CMD; then
+  fail "Semantic versioning check failed.. Run \`$SEMVER_CHECK_CMD\` and fix issues."
+fi
+success "Semantic versioning check passed."
