@@ -1,0 +1,26 @@
+name: Unused Dependencies
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  SCOPE: --all-targets --all-features
+
+jobs:
+  udeps-deep-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+
+      - run: cargo install cargo-udeps --locked
+
+      - run: cargo udeps $SCOPE
