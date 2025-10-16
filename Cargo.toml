@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = []
+members = ["crates/bin", "crates/lib"]
 
 [workspace.package]
 edition = "2024"
@@ -11,6 +11,9 @@ keywords = []
 license-file = "LICENSE"
 readme = "README.md"
 repository = ""
+
+[workspace.dependencies]
+lib = { path = "crates/lib" }
 
 [workspace.lints.rust]
 warnings = "deny"
@@ -99,4 +102,3 @@ undocumented_unsafe_blocks = "deny"
 unimplemented = "deny"
 unneeded_field_pattern = "warn"
 
-[workspace.dependencies]

@@ -1,0 +1,17 @@
+[package]
+name = "bin"
+version = "0.1.0"
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+categories.workspace = true
+keywords.workspace = true
+license-file.workspace = true
+readme.workspace = true
+repository.workspace = true
+
+[dependencies]
+lib.workspace = true
+
+[lints]
+workspace = true
