@@ -17,3 +17,5 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
    - Update "`bin`" crate dependency to "`lib`" crate
 
 3. Update `LICENSE`
+
+4. Update/replace this `README.md`
