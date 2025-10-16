@@ -2,7 +2,7 @@
 
 This repository is intended to be a template for Rust projects hosted on GitHub.
 
-## After cloning
+## After Cloning
 
 1. Update workspace `Cargo.toml`
    - `authors`
@@ -19,3 +19,11 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 3. Update `LICENSE`
 
 4. Update/replace this `README.md`
+
+## Project Getting Started
+
+1. Initialize your development environment
+
+   ```sh
+   make deps
+   ```
