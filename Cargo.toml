@@ -3,8 +3,9 @@ resolver = "2"
 members = ["crates/bin", "crates/lib"]
 
 [workspace.package]
+authors = []
 edition = "2024"
-rust-version = "1.86.0"
+rust-version = "1.90.0"
 
 categories = []
 keywords = []
