@@ -7,6 +7,8 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
 
 . "${SCRIPTS_DIR}/functions.sh"
 
+echo ""
+
 info "Running semantic versioning check..."
 LAST_DEVELOP_GIT_HASH=$(git rev-parse main)
 SEMVER_CHECK_CMD="cargo semver-checks --all-features --baseline-rev $LAST_DEVELOP_GIT_HASH"

@@ -11,6 +11,8 @@ if [ -z "${RUST_SCOPE+x}" ]; then
   RUST_SCOPE="--all-targets --all-features"
 fi
 
+echo ""
+
 TEST_CMD="cargo test $RUST_SCOPE"
 info "Running tests with \`$TEST_CMD\`..."
 if ! $TEST_CMD; then

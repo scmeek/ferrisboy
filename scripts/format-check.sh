@@ -7,6 +7,8 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
 
 . "${SCRIPTS_DIR}/functions.sh"
 
+echo ""
+
 FMT_CMD="cargo fmt -v --check"
 info "Checking formatting with \`$FMT_CMD\`..."
 if ! $FMT_CMD; then

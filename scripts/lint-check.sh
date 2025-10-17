@@ -11,6 +11,8 @@ if [ -z "${RUST_SCOPE+x}" ]; then
   RUST_SCOPE="--all-targets --all-features"
 fi
 
+echo ""
+
 CHECK_CMD="cargo check $RUST_SCOPE"
 info "Checking code compilation with \`$CHECK_CMD\`..."
 if ! $CHECK_CMD; then
@@ -18,6 +20,8 @@ if ! $CHECK_CMD; then
 fi
 success "Code compiles."
 CLIPPY_CMD="cargo clippy $RUST_SCOPE"
+
+echo ""
 
 info "Running clippy linter with \`$CLIPPY_CMD\`..."
 if ! $CLIPPY_CMD; then

@@ -11,6 +11,8 @@ if [ -z "${RUST_DOC_SCOPE+x}" ]; then
   RUST_DOC_SCOPE="--all-features"
 fi
 
+echo ""
+
 DOC_CMD="cargo doc --no-deps $RUST_DOC_SCOPE"
 info "Generating documentation with \`$DOC_CMD\`..."
 if ! $DOC_CMD; then
