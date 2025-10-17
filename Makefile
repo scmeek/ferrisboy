@@ -15,12 +15,12 @@ h help: ## Display this help message
 	@grep -hE '^[ a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\t\033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: hooks
+hooks: ## Attach git hooks
+	$(SCRIPTS_DIR)/hooks.sh
+
 .PHONY: deps
 deps: ## Install project dependencies
-	@echo "Linking pre-push git hook..."
-	cd $(MAKEFILE_DIR) && \
-		ln -sf $(SCRIPTS_DIR)/git-pre-push.sh .git/hooks/pre-push
-	@echo "Linked pre-push git hook"
 	$(SCRIPTS_DIR)/dependencies.sh
 
 .PHONY: docs

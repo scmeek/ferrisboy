@@ -27,5 +27,6 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 1. Initialize your development environment
 
    ```sh
+   make hooks
    make deps
    ```
