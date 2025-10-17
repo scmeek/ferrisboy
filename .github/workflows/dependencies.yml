@@ -11,8 +11,8 @@ env:
   SCOPE: --all-targets --all-features
 
 jobs:
-  udeps-deep-check:
-    runs-on: ubuntu-latest
+  dependencies-check:
+    runs-on: rust:1.89 # Also defined in workspace Cargo.toml
 
     steps:
       - uses: actions/checkout@v4

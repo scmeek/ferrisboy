@@ -25,15 +25,15 @@ deps: ## Install project dependencies
 
 .PHONY: docs
 d docs:  ## Generate documentation
-	$(SCRIPTS_DIR)/documentation_generate.sh
+	$(SCRIPTS_DIR)/documentation-generate.sh
 
 .PHONY: format
 f format:  ## Check formatting
-	$(SCRIPTS_DIR)/format_check.sh
+	$(SCRIPTS_DIR)/format-check.sh
 
 .PHONY: lint
 l lint:  ## Check lints
-	$(SCRIPTS_DIR)/lint_check.sh
+	$(SCRIPTS_DIR)/lint-check.sh
 
 .PHONY: test
 t test:  ## Run tests
@@ -41,7 +41,7 @@ t test:  ## Run tests
 
 .PHONY: version
 v version:  ## Check semantic versioning
-	$(SCRIPTS_DIR)/test.sh
+	$(SCRIPTS_DIR)/version-check.sh
 
 .PHONY: build
 b build: ## Build project
