@@ -9,3 +9,4 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
 
 cargo install cargo-tarpaulin --locked
 cargo install cargo-workspace-lints
+cargo install cargo-udeps --locked

@@ -21,8 +21,8 @@ jobs:
         with:
           toolchain: 1.90 # Also defined in workspace Cargo.toml
 
-      - name: Install cargo-udeps
-        run: cargo install cargo-udeps --locked
+      - name: Install dependencies
+        run: ./scripts/dependencies.sh
 
       - name: Find unused dependencies
         run: cargo udeps $SCOPE
