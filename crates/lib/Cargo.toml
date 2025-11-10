@@ -11,7 +11,16 @@ license-file.workspace = true
 readme.workspace = true
 repository.workspace = true
 
-[dependencies]
-
 [lints]
 workspace = true
+
+[dependencies]
+
+[dev-dependencies]
+criterion = { workspace = true }
+
+# Benchmarks (for local development)
+[[bench]]
+name = "criterion_benches"
+harness = false
+test = false

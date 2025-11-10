@@ -13,10 +13,10 @@ fi
 
 echo ""
 
-CHECK_CMD="cargo workspace-lints"
+CHECK_CMD="cargo workspace-lints" # Also in dependencies.sh
 info "Running workspace lints enforcement check..."
 if ! $CHECK_CMD; then
-  fail "A crate is missing workspace.lints"
+  fail "A crate is missing workspace.lints."
 fi
 success "Workspace lints are properly enforced."
 

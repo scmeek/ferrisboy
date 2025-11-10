@@ -1,0 +1,69 @@
+name: Benchmark
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+env:
+  CARGO_TERM_COLOR: always
+  BENCHMARK_ALERT_THRESHOLD: 115%
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - uses: dtolnay/rust-toolchain@1.91 # Also defined in workspace Cargo.toml
+
+      - uses: Swatinem/rust-cache@v2
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-criterion # Also defined in scripts/benchmark.sh
+
+      - name: Run criterion benchmarks
+        run: |
+          cargo criterion --bench criterion_benches --output-format bencher 2>&1 | tee criterion-output.txt
+
+      - name: Store criterion results for historical tracking
+        uses: benchmark-action/github-action-benchmark@v1
+        if: false # Requires a `gh-pages` branch
+        # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        with:
+          tool: "cargo"
+          output-file-path: criterion-output.txt
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          alert-threshold: ${{ env.BENCHMARK_ALERT_THRESHOLD }}
+          comment-on-alert: true
+          fail-on-alert: false
+
+      - name: Comment criterion results on PR
+        uses: benchmark-action/github-action-benchmark@v1
+        if: false # Requires a `gh-pages` branch
+        # if: github.event_name == 'pull_request'
+        with:
+          tool: "cargo"
+          output-file-path: criterion-output.txt
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          comment-always: true
+
+      - name: Upload criterion reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: criterion-reports
+          path: |
+            target/criterion/
+            criterion-output.txt
+          retention-days: 30

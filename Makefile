@@ -50,3 +50,12 @@ v version:  ## Check semantic versioning
 .PHONY: build
 b build: ## Build project
 	@echo "Use \`cargo\` to build project"
+
+.PHONY: benchmark
+benchmark: ## Run benchmarks
+	$(SCRIPTS_DIR)/benchmark.sh
+
+.PHONY: view-benchmark
+view-benchmark: ## Open HTML wall-time benchmarks report
+	$(SCRIPTS_DIR)/benchmark.sh
+	open target/criterion/report/index.html

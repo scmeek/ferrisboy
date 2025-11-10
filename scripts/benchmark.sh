@@ -13,9 +13,9 @@ fi
 
 echo ""
 
-TEST_CMD="cargo llvm-cov nextest --workspace $RUST_SCOPE" # Also in dependencies.sh
-info "Running tests with \`$TEST_CMD\`..."
-if ! $TEST_CMD; then
-  fail "Tests failed. Run \`$TEST_CMD\` and fix issues."
+BENCHMARK_WALLTIME_CMD="cargo criterion" # Also in dependencies.sh
+info "Running wall-time benchmarks..."
+if ! $BENCHMARK_WALLTIME_CMD; then
+  fail "Wall-time benchmarks failed."
 fi
-success "All tests passed."
+success "Wall-time benchmarks successfully ran."
