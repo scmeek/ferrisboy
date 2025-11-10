@@ -18,10 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - uses: actions-rs/toolchain@v1
+      - uses: dtolnay/rust-toolchain@1.91 # Also defined in workspace Cargo.toml
         with:
-          toolchain: 1.91 # Also defined in workspace Cargo.toml
-          override: true
           components: rustfmt
 
       - uses: Swatinem/rust-cache@v2
