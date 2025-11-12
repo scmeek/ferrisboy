@@ -4,9 +4,12 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
 
 ## Template Features
 
+- `Make` for project interactions, except for `cargo`-native actions
 - Local and CI implementations
   - Pre-push git hooks for fast feedback
   - Fast CI workflows for near-immediate Pull Request validations
+  - GitHub Actions static analysis and auditing
+    - [zizmor](https://github.com/zizmorcore/zizmor)
 - Strict workspace-wide linting configuration
 - Dependency auditing
   - Unused dependencies
@@ -59,7 +62,8 @@ This repository is intended to be a template for Rust projects hosted on GitHub.
    - Update `.github/workflows/release-plz.yml` to new names
 
 5. Update workspace `Cargo.toml`.
-   - `authors`
+   - `workspace.package` section
+   - `workspace.metadata` section
 
 6. Update `benchmark.yml` to enable historical storage and PR comments of
    benchmarks, if desired.
