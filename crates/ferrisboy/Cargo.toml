@@ -1,0 +1,18 @@
+[package]
+name = "ferrisboy"
+version = "0.1.0"
+description = "A CLI for the Ferris Boy Game Boy emulator."
+authors.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+categories.workspace = true
+keywords.workspace = true
+license-file.workspace = true
+readme.workspace = true
+repository.workspace = true
+
+[dependencies]
+fb-core = { workspace = true }
+
+[lints]
+workspace = true
