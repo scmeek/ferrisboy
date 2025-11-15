@@ -24,7 +24,7 @@ _REMOTE="${1:-}"
 _URL="${2:-}"
 
 SCRIPTS_DIR="${SCRIPTS_DIR:-$(dirname -- "$(readlink -f -- "$0")")}"
-PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/../.." && pwd)}"
+PROJECT_ROOT="${PROJECT_ROOT:-$(CDPATH='' cd -- "$SCRIPTS_DIR/.." && pwd)}"
 
 . "${SCRIPTS_DIR}/functions.sh"
 
@@ -35,7 +35,9 @@ if [ "${SKIP_UNCOMMITTED_CHECK:-false}" != "true" ] && [ -n "$(git status --porc
   fail "${text}"
 fi
 
-"${SCRIPTS_DIR}/lint.sh"
+"${SCRIPTS_DIR}/format-check.sh"
+"${SCRIPTS_DIR}/lint-check.sh"
+SKIP_RELEASE_TEST=true "${SCRIPTS_DIR}/test.sh"
 
 echo ""
 final_success "Pre-push checks passed. Proceeding with push."

@@ -15,17 +15,50 @@ h help: ## Display this help message
 	@grep -hE '^[ a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\t\033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: hooks
+hooks: ## Attach git hooks
+	$(SCRIPTS_DIR)/hooks.sh
+
 .PHONY: deps
-d deps: ## Install project dependencies
-	@echo "Linking pre-push git hook..."
-	cd $(MAKEFILE_DIR) && \
-		ln -sf $(SCRIPTS_DIR)/git-pre-push.sh .git/hooks/pre-push
-	@echo "Linked pre-push git hook"
+deps: ## Install project dependencies
+	$(SCRIPTS_DIR)/dependencies.sh
+
+.PHONY: audit
+a audit: ## Audit dependencies for security vulnerabilities
+	$(SCRIPTS_DIR)/audit.sh
+
+.PHONY: docs
+d docs:  ## Generate documentation
+	$(SCRIPTS_DIR)/documentation-generate.sh
+
+.PHONY: format
+f format:  ## Check formatting
+	$(SCRIPTS_DIR)/format-check.sh
 
 .PHONY: lint
-l lint:  ## Lint
-	$(SCRIPTS_DIR)/lint.sh
+l lint:  ## Check lints
+	$(SCRIPTS_DIR)/lint-check.sh
+
+.PHONY: test
+t test:  ## Run tests (debug build)
+	SKIP_RELEASE_TEST=true $(SCRIPTS_DIR)/test.sh
+
+.PHONY: test-all
+test-all:  ## Run all tests (include release build)
+	$(SCRIPTS_DIR)/test.sh
+
+.PHONY: licenses
+licenses:  ## Check dependency licenses
+	$(SCRIPTS_DIR)/licenses-check.sh
+
+.PHONY: version
+v version:  ## Check semantic versioning
+	$(SCRIPTS_DIR)/version-check.sh
 
 .PHONY: build
 b build: ## Build project
 	@echo "Use \`cargo\` to build project"
+
+.PHONY: benchmark
+benchmark: ## Run benchmarks
+	$(SCRIPTS_DIR)/benchmark.sh
