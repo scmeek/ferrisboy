@@ -6,18 +6,15 @@
 
 **FerrisBoy** is an experimental and amateur Game Boy emulator written in **Rust**.
 
-## 🔧 Installation
+## Getting Started
 
 ### Prerequisites
 
-Ensure you have the following installed:
-
-- [Rust](https://www.rust-lang.org/tools/install) (latest stable version) and `cargo`
+- Install [Rust](https://www.rust-lang.org/tools/install) (latest stable version) and `cargo`
 - Set up development environment
   - `make deps`
+  - `make hooks`
   - `cargo build`
-
-All project targets are through `Make` and `cargo`.
 
 ### Build and Run
 
@@ -29,21 +26,11 @@ cd ferrisboy
 cargo build --release
 ```
 
-## 🏗️ Roadmap
-
-### ✅ Current Progress
-
-- [ ] CPU instruction decoding & execution
-- [ ] Memory management
-- [ ] Basic graphics rendering
-- [ ] Sound emulation
-- [ ] Save states and battery-backed RAM
-
-## 📜 License
+## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
-## 📚 References
+## References
 
 ### Videos
 
