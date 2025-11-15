@@ -1,0 +1,58 @@
+name: Dependency licenses check
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  licenses-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+          submodules: true
+
+      - uses: dtolnay/rust-toolchain@0f44b27771c32bda9f458f75a1e241b09791b331 # v1.91.1
+        with:
+          toolchain: 1.91 # Also defined in workspace Cargo.toml
+
+      - uses: Swatinem/rust-cache@f13886b937689c021905a6b90929199931d60db1 # v2.8.1
+
+      - uses: taiki-e/install-action@44c6d64aa62cd779e873306675c7a58e86d6d532 # v2.62.49
+        with:
+          tool: cargo-license # Also defined in scripts/license.sh
+
+      - name: Run licenses check script
+        run: ./scripts/licenses-check.sh > license-report.txt 2>&1
+
+      - name: Upload license report
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: license-report
+          path: |
+            license-report
+            license-report.txt
+          retention-days: 30
+
+      - name: Comment on PR with results
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('license-report.txt', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ License compliance check failed. Some dependencies use non-open-source or unrecognized licenses.\n\n```\n' + report + '\n```'
+            })

@@ -1,31 +1,66 @@
 [workspace]
 resolver = "2"
-members = ["ferrisboy", "ferrisboy_core"]
+members = ["crates/ferrisboy", "crates/fb-core"]
 
 [workspace.package]
+description = "A Game Boy emulator"
+authors = ["Sean Meek"]
 edition = "2024"
-rust-version = "1.86.0"
+rust-version = "1.91"               # Also defined in GitHub Actions workflow runners
 
 categories = ["emulators"]
 keywords = ["retro", "gaming", "emulators", "gameboy", "game boy"]
+# documentation = "documentation"
 license-file = "LICENSE"
 readme = "README.md"
 repository = "https://github.com/scmeek/ferrisboy"
 
-[workspace.lints.rust]
-warnings = "deny"
+publish = false
 
-arithmetic_overflow = "deny" # Prevent operations that would cause integer overflow
+exclude = [".github", "scripts"]
+
+[workspace.metadata]
+maintainers = [{ name = "Sean Meek", email = "sean@seanmeek.com" }]
+# resources = [{ name = "resource name", url = "url" }]
+tags = ["retro", "gaming", "emulators", "gameboy", "game boy"]
+# notes = "notes"
+
+[workspace.dependencies]
+fb-core = { path = "crates/fb-core" }
+
+anyhow = "1"
+criterion = { version = "0.7", features = ["html_reports"] } # Benchmarks
+derive-new = "0.7"
+rstest = "0.26"                                              # Tests
+serde = "1"
+thiserror = "2"
+tracing = "0.1"
+
+# -- Lints --
+
+[workspace.lints.rust]
+# warnings = "deny"
+unsafe_code = "deny"
+arithmetic_overflow = "deny"    # Prevent operations that would cause integer overflow
+unnecessary_transmutes = "deny" # Prevent unsafe transmutations
 
 [workspace.lints.clippy]
+
 # Blanket foundation rules
+all = { level = "deny", priority = -1 }
 cargo = { level = "deny", priority = -1 }
 complexity = { level = "deny", priority = -1 }
 correctness = { level = "deny", priority = -1 }
 panic = { level = "deny", priority = -1 }
+pedantic = { level = "deny", priority = -1 }
 perf = { level = "deny", priority = -1 }
 style = { level = "deny", priority = -1 }
 suspicious = { level = "deny", priority = -1 }
+
+# Macros
+dbg_macro = "warn"
+todo = "deny"
+unimplemented = "deny"
 
 # Style and clarity
 wildcard_imports = "deny"
@@ -41,44 +76,44 @@ map_clone = "deny"
 
 # Arithmetic
 checked_conversions = "deny"            # Suggest using checked conversions between numeric types
-cast_possible_truncation = "deny"       # Detect when casting might truncate a value
-cast_sign_loss = "deny"                 # Detect when casting might lose sign information
-cast_possible_wrap = "deny"             # Detect when casting might cause value to wrap around
-cast_precision_loss = "deny"            # Detect when casting might lose precision
+cast_possible_truncation = "deny"
+cast_sign_loss = "deny"
+cast_possible_wrap = "deny"
+cast_precision_loss = "deny"
 integer_division = "deny"               # Highlight potential bugs from integer division truncation
-arithmetic_side_effects = "deny"        # Detect arithmetic operations with potential side effects
+arithmetic_side_effects = "deny"
 unchecked_duration_subtraction = "deny" # Ensure duration subtraction won't cause underflow
 
 # Unwraps
-unwrap_used = "deny"       # Prevent using .unwrap() which can cause panics
-expect_used = "deny"       # Prevent using .expect() which can cause panics
+unwrap_used = "forbid"
+expect_used = "forbid"
 panicking_unwrap = "deny"  # Prevent unwrap on values known to cause panics
 option_env_unwrap = "deny" # Prevent unwrapping environment variables which might be absent
 
-# Array indexing
-indexing_slicing = "deny" # Avoid direct array indexing and use safer methods like .get()
-
-# Path handling
-join_absolute_paths = "deny" # Prevent issues when joining paths with absolute paths
-
-# Serialization issues
-serde_api_misuse = "deny" # Prevent incorrect usage of Serde's serialization/deserialization API
-
-# Unbounded input
-uninit_vec = "deny" # Prevent creating uninitialized vectors which is unsafe
-
 # Unsafe code detection
-transmute_int_to_char = "deny"    # Prevent unsafe transmutation from integers to characters
-transmute_int_to_float = "deny"   # Prevent unsafe transmutation from integers to floats
 transmute_ptr_to_ref = "deny"     # Prevent unsafe transmutation from pointers to references
-transmute_undefined_repr = "deny" # Detect transmutes with potentially undefined representations
+transmute_undefined_repr = "deny"
 
-# Allowed exceptions
-multiple_crate_versions = "allow" # Can't control dependencies of dependencies
-
-[workspace.dependencies]
-clap = { version = "4", features = ["derive"] }
-tracing = "0.1.41"
-tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
-
-ferrisboy_core = { path = "./ferrisboy_core" }
+# Miscellaneous
+allow_attributes = "deny"
+allow_attributes_without_reason = "deny"
+exit = "deny"
+indexing_slicing = "deny"                # Avoid direct array indexing and use safer methods like .get()
+infinite_loop = "deny"
+join_absolute_paths = "deny"             # Prevent issues when joining paths with absolute paths
+let_underscore_must_use = "deny"
+map_err_ignore = "deny"
+missing_assert_message = "warn"
+multiple_crate_versions = "allow"        # Can't control dependencies of dependencies
+must_use_candidate = "deny"
+print_stdout = "deny"
+print_stderr = "deny"
+redundant_type_annotations = "deny"
+rest_pat_in_fully_bound_structs = "deny"
+return_and_then = "deny"
+serde_api_misuse = "deny"                # Prevent incorrect usage of Serde's serialization/deserialization API
+string_slice = "deny"
+try_err = "deny"
+undocumented_unsafe_blocks = "deny"
+unneeded_field_pattern = "deny"
+uninit_vec = "deny"                      # Prevent creating uninitialized vectors which is unsafe
