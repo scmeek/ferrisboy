@@ -1,6 +1,6 @@
 .SILENT:
 
-# export PROJECT_NAME := ferrisboy
+export PROJECT_NAME := ferrisboy
 export PROJECT_ROOT := $(shell pwd)
 export SCRIPTS_DIR := $(PROJECT_ROOT)/scripts
 MAKEFILE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
