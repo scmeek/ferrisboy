@@ -180,9 +180,6 @@ dependencies = [
 [[package]]
 name = "ferrisboy"
 version = "0.1.0"
-dependencies = [
- "fb-core",
-]
 
 [[package]]
 name = "half"
