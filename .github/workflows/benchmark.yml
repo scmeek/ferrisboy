@@ -41,8 +41,7 @@ jobs:
 
       - name: Store criterion results for historical tracking
         uses: benchmark-action/github-action-benchmark@4bdcce38c94cec68da58d012ac24b7b1155efe8b # v1.20.7
-        if: false # Requires a `gh-pages` branch
-        # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           tool: "cargo"
           output-file-path: criterion-output.txt
@@ -54,8 +53,7 @@ jobs:
 
       - name: Comment criterion results on PR
         uses: benchmark-action/github-action-benchmark@4bdcce38c94cec68da58d012ac24b7b1155efe8b # v1.20.7
-        if: false # Requires a `gh-pages` branch
-        # if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request'
         with:
           tool: "cargo"
           output-file-path: criterion-output.txt
