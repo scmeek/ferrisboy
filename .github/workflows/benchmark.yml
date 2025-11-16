@@ -39,6 +39,7 @@ jobs:
         uses: boa-dev/criterion-compare-action@adfd3a94634fe2041ce5613eb7df09d247555b87 #v3.2.4
         if: github.event_name == 'pull_request'
         with:
+          branchName: ${{ github.base_ref }}
           outputPath: criterion-output.txt
 
       - name: Run criterion benchmarks
