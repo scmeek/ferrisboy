@@ -5,6 +5,11 @@ pub struct Emulator {}
 impl Emulator {
     #[expect(clippy::missing_errors_doc, reason = "Docs TBD")]
     pub fn new(_config: &Config) -> Result<Self, Error> {
+        // TODO: Remove after initial implementation (used for initial benchmarking)
+        {
+            let _vec = vec![0u8; 1024];
+            std::hint::black_box(());
+        }
         Ok(Self {})
     }
 
