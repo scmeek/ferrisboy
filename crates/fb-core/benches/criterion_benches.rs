@@ -6,7 +6,8 @@ fn bench_emulator_init(c: &mut Criterion) {
     c.bench_function("emulator_new", |b| {
         b.iter(|| {
             let config = Config {};
-            Emulator::new(black_box(&config))
+            let result = Emulator::new(black_box(&config));
+            black_box(result)
         });
     });
 }
