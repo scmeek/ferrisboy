@@ -20,8 +20,12 @@ thiserror.workspace = true
 [dev-dependencies]
 criterion = { workspace = true }
 
-# Benchmarks (for local development)
+# Benchmarks
 [[bench]]
 name = "criterion_benches"
 harness = false
 test = false
+
+# Required for criterion in CI
+# https://bheisler.github.io/criterion.rs/book/faq.html#cargo-bench-gives-unrecognized-option-errors-for-valid-command-line-options
+bench = false
