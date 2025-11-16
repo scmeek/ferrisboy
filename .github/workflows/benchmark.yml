@@ -59,6 +59,8 @@ jobs:
           output-file-path: criterion-output.txt
           github-token: ${{ secrets.GITHUB_TOKEN }}
           comment-always: true
+          save-data-file: false
+          skip-fetch-gh-pages: true
 
       - name: Upload criterion reports
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
