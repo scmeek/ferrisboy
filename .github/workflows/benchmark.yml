@@ -35,17 +35,16 @@ jobs:
         with:
           tool: cargo-criterion # Also defined in scripts/benchmark.sh
 
+      - name: Run criterion benchmarks
+        run: |
+          cargo criterion --output-format bencher 2>&1 | tee criterion-output.txt
+
       - name: Compare benchmarks with base branch
         uses: boa-dev/criterion-compare-action@adfd3a94634fe2041ce5613eb7df09d247555b87 #v3.2.4
         if: github.event_name == 'pull_request'
         with:
           branchName: ${{ github.base_ref }}
           outputPath: criterion-output.txt
-
-      - name: Run criterion benchmarks
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          cargo criterion --bench criterion_benches --output-format bencher 2>&1 | tee criterion-output.txt
 
       - name: Store criterion results for historical tracking
         uses: benchmark-action/github-action-benchmark@4bdcce38c94cec68da58d012ac24b7b1155efe8b # v1.20.7
