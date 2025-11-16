@@ -1,13 +1,15 @@
 use criterion::{Criterion, criterion_group, criterion_main};
-// use fb_core::add;
-// use std::hint::black_box;
+use fb_core::prelude::{Config, Emulator};
+use std::hint::black_box;
 
-fn empty(_c: &mut Criterion) {}
-// fn bench_add(c: &mut Criterion) {
-//     c.bench_function("my_function", |b| {
-//         b.iter(|| add(black_box(42), black_box(58)));
-//     });
-// }
+fn bench_emulator_init(c: &mut Criterion) {
+    c.bench_function("emulator_new", |b| {
+        b.iter(|| {
+            let config = Config {};
+            Emulator::new(black_box(&config))
+        });
+    });
+}
 
-criterion_group!(benches, empty);
+criterion_group!(benches, bench_emulator_init);
 criterion_main!(benches);
