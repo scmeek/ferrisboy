@@ -20,8 +20,7 @@ workspace = true
 criterion = { workspace = true }
 
 # Benchmarks (for local development)
-# TODO: This is disabled until an actual implementation is in place so the history isn't polluted.
-# [[bench]]
-# name = "criterion_benches"
-# harness = false
-# test = false
+[[bench]]
+name = "criterion_benches"
+harness = false
+test = false
