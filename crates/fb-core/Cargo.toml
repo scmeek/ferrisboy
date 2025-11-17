@@ -22,6 +22,6 @@ criterion = { workspace = true }
 
 # Benchmarks
 [[bench]]
-name = "criterion_benches"
+name = "criterion_benches" # Also in benchmark.yml
 harness = false
 test = false

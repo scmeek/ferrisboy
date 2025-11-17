@@ -44,6 +44,7 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           branchName: ${{ github.base_ref }}
+          benchName: criterion_benches # Also in fb-core Cargo.toml
           outputPath: criterion-output.txt
 
       - name: Store criterion results for historical tracking
