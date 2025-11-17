@@ -35,10 +35,6 @@ jobs:
         with:
           tool: cargo-criterion # Also defined in scripts/benchmark.sh
 
-      - name: Run criterion benchmarks
-        run: |
-          cargo bench --bench criterion_benches --output-format bencher 2>&1 | tee criterion-output.txt # Also in fb-core Cargo.toml
-
       - name: Download previous benchmark baseline
         if: github.event_name == 'pull_request'
         uses: dawidd6/action-download-artifact@ac66b43f0e6a346234dd65d4d0c8fbb31cb316e5 # v11
@@ -49,13 +45,12 @@ jobs:
           path: .
         continue-on-error: true
 
-      - name: Compare with baseline
-        if: github.event_name == 'pull_request'
+      - name: Run benchmarks
         run: |
           if [ -d "target/criterion" ]; then
-            cargo bench --bench criterion_benches -- --baseline main 2>&1 | tee comparison.txt # Also in fb-core Cargo.toml
+            cargo bench --bench criterion_benches -- --baseline main 2>&1 | tee comparison.txt
           else
-            cp criterion-output.txt comparison.txt
+            cargo bench --bench criterion_benches -- --save-baseline main 2>&1 | tee comparison.txt
           fi
 
       - name: Comment benchmark comparison on PR
