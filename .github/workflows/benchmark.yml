@@ -39,13 +39,39 @@ jobs:
         run: |
           cargo criterion --output-format bencher 2>&1 | tee criterion-output.txt
 
-      - name: Compare benchmarks with base branch
-        uses: boa-dev/criterion-compare-action@adfd3a94634fe2041ce5613eb7df09d247555b87 #v3.2.4
+      - name: Download previous benchmark baseline
         if: github.event_name == 'pull_request'
+        uses: dawidd6/action-download-artifact@v3
         with:
-          branchName: ${{ github.base_ref }}
-          benchName: criterion_benches # Also in fb-core Cargo.toml
-          outputPath: criterion-output.txt
+          workflow: benchmark.yml
+          branch: main
+          name: criterion-reports
+          path: .
+        continue-on-error: true
+
+      - name: Compare with baseline
+        if: github.event_name == 'pull_request'
+        run: |
+          if [ -d "target/criterion" ]; then
+            cargo criterion -- --baseline main 2>&1 | tee comparison.txt
+          else
+            cp criterion-output.txt comparison.txt
+          fi
+
+      - name: Comment benchmark comparison on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const output = fs.readFileSync('comparison.txt', 'utf8');
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '```\n' + output + '\n```'
+            });
 
       - name: Store criterion results for historical tracking
         uses: benchmark-action/github-action-benchmark@4bdcce38c94cec68da58d012ac24b7b1155efe8b # v1.20.7
@@ -67,4 +93,4 @@ jobs:
           path: |
             target/criterion/
             criterion-output.txt
-          retention-days: 30
+          retention-days: 400
