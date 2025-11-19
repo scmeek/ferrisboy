@@ -4,7 +4,7 @@
   <img src="assets/FerrisBoy.png" alt="FerrisBoy Logo" width="200">
 </p>
 
-**FerrisBoy** is an experimental and amateur Game Boy emulator written in **Rust**.
+**Ferris Boy** is an experimental and amateur Game Boy emulator written in **Rust**.
 
 ## Getting Started
 

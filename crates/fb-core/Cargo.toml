@@ -15,12 +15,14 @@ repository.workspace = true
 workspace = true
 
 [dependencies]
+thiserror.workspace = true
 
 [dev-dependencies]
 criterion = { workspace = true }
 
-# Benchmarks (for local development)
+# Benchmarks
 [[bench]]
 name = "criterion_benches"
+bench = true               # Important for `cargo bench --benches` command
 harness = false
 test = false
