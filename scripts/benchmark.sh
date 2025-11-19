@@ -13,7 +13,7 @@ fi
 
 echo ""
 
-BENCHMARK_CMD="cargo bench --bench criterion_benches" # Also in dependencies.sh and fb-core Cargo.toml
+BENCHMARK_CMD="cargo bench --benches"
 info "Running benchmarks..."
 if ! $BENCHMARK_CMD; then
   fail "Benchmarks failed."

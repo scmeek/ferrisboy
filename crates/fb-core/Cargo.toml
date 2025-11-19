@@ -22,6 +22,7 @@ criterion = { workspace = true }
 
 # Benchmarks
 [[bench]]
-name = "criterion_benches" # Also in benchmark.yml
+name = "criterion_benches"
+bench = true               # Important for `cargo bench --benches` command
 harness = false
 test = false

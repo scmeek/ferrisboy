@@ -48,7 +48,7 @@ jobs:
           fi
 
       - name: Run PR benchmarks
-        run: cargo bench --bench criterion_benches
+        run: cargo bench --benches --color never | tee target/criterion/cargo_bench_output.log
 
       - name: Compare PR results with baseline
         if: steps.baseline.outputs.found == 'true'
@@ -59,6 +59,14 @@ jobs:
           threshold: "0.05"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Post results PR comment if no baseline found
+        if: steps.baseline.outputs.found == 'false'
+        run: |
+          body="⚠️ No baseline found yet. Benchmarks ran successfully:\n\n\`\`\`\n$(cat target/criterion/cargo_bench_output.log)\n\`\`\`"
+          gh pr comment ${{ github.event.pull_request.number }} --body "$body"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # Run benchmarks on main and publish criterion output to GitHub Pages
   publish-history:
@@ -84,7 +92,7 @@ jobs:
 
       - name: Run main benchmarks
         run: |
-          cargo bench --bench criterion_benches
+          cargo bench --benches --color never
 
       - name: Publish Criterion HTML + JSON to gh-pages
         uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0
