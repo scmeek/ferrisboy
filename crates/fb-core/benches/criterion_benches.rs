@@ -2,7 +2,7 @@ use criterion::{Criterion, criterion_group, criterion_main};
 use fb_core::prelude::{Config, Emulator};
 use std::hint::black_box;
 
-fn bench_emulator_init(c: &mut Criterion) {
+fn bench_emulator(c: &mut Criterion) {
     c.bench_function("emulator_new", |b| {
         b.iter(|| {
             let config = Config {};
@@ -12,5 +12,5 @@ fn bench_emulator_init(c: &mut Criterion) {
     });
 }
 
-criterion_group!(benches, bench_emulator_init);
+criterion_group!(benches, bench_emulator);
 criterion_main!(benches);
