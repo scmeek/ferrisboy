@@ -63,7 +63,7 @@ jobs:
       - name: Post results PR comment if no baseline found
         if: steps.baseline.outputs.found == 'false'
         run: |
-          body="⚠️ No baseline found yet. Benchmarks ran successfully:\n\n\`\`\`\n$(cat target/criterion/cargo_bench_output.log)\n\`\`\`"
+          body="No baseline found yet. Benchmarks ran successfully:$(cat target/criterion/cargo_bench_output.log)"
           gh pr comment ${{ github.event.pull_request.number }} --body "$body"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
