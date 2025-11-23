@@ -52,7 +52,9 @@ jobs:
 
       - name: Run PR benchmarks
         continue-on-error: true # Could fail on outliers
-        run: cargo bench --benches --color never | tee target/criterion/cargo_bench_output.log
+        run: |
+          mkdir -p target/criterion
+          cargo bench --benches --color never | tee target/criterion/cargo_bench_output.log
 
       - name: Compare PR results with baseline
         if: steps.baseline.outputs.found == 'true'
