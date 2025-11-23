@@ -35,45 +35,13 @@ jobs:
         with:
           tool: cargo-criterion # Also defined in scripts/benchmark.sh
 
-      - name: Build benches
-        run: cargo build --benches --release
-
-      - name: Fetch baseline JSON from gh-pages
-        id: baseline
-        run: |
-          mkdir -p baseline
-          git clone --depth 1 --branch gh-pages https://github.com/${{ github.repository }}.git ghpages
-          cp -R ghpages/benchmark-data/latest/* baseline/ 2>/dev/null || echo "No baseline found"
-          if [ -d "baseline" ] && [ "$(ls -A baseline)" ]; then
-            echo "found=true" >> $GITHUB_OUTPUT
-          else
-            echo "found=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Run PR benchmarks
-        continue-on-error: true # Could fail on outliers
-        run: |
-          mkdir -p target/criterion
-          cargo bench --benches --color never | tee target/criterion/cargo_bench_output.log
-
       - name: Compare PR results with baseline
-        if: steps.baseline.outputs.found == 'true'
         uses: boa-dev/criterion-compare-action@adfd3a94634fe2041ce5613eb7df09d247555b87 # v3.2.4
         with:
           branchName: ${{ github.base_ref || github.ref_name }}
-          baseline: "baseline"
-          current: "target/criterion"
-          threshold: "0.05"
+          benchName: "criterion_benches"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Post results PR comment if no baseline found
-        if: steps.baseline.outputs.found == 'false'
-        run: |
-          body="No baseline found yet. Benchmarks ran successfully:$(cat target/criterion/cargo_bench_output.log)"
-          gh pr comment ${{ github.event.pull_request.number }} --body "$body"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # Run benchmarks on main and publish criterion output to GitHub Pages
   benchmark-publish-history:
@@ -99,7 +67,7 @@ jobs:
 
       - name: Run main benchmarks
         run: |
-          cargo bench --benches --color never
+          cargo bench --bench criterion_benches --color never
 
       - name: Publish Criterion HTML + JSON to gh-pages
         uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0

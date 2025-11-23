@@ -27,7 +27,7 @@ bench = false
 
 # Benchmarks
 [[bench]]
-name = "criterion_benches"
+name = "criterion_benches" # Also in benchmark.sh and benchmark.yml
 bench = true               # Important for `cargo bench --benches` command
 harness = false
 test = false
