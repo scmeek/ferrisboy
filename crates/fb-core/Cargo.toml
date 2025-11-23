@@ -20,6 +20,11 @@ thiserror.workspace = true
 [dev-dependencies]
 criterion = { workspace = true }
 
+[lib]
+# Necessary for criterion-compare-action in CI
+# https://github.com/boa-dev/criterion-compare-action?tab=readme-ov-file#unrecognized-option-save-baseline
+bench = false
+
 # Benchmarks
 [[bench]]
 name = "criterion_benches"
