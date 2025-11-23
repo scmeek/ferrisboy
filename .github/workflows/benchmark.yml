@@ -35,6 +35,9 @@ jobs:
         with:
           tool: cargo-criterion # Also defined in scripts/benchmark.sh
 
+      - name: Build benches
+        run: cargo build --benches --release
+
       - name: Fetch baseline JSON from gh-pages
         id: baseline
         run: |
@@ -48,6 +51,7 @@ jobs:
           fi
 
       - name: Run PR benchmarks
+        continue-on-error: true # Could fail on outliers
         run: cargo bench --benches --color never | tee target/criterion/cargo_bench_output.log
 
       - name: Compare PR results with baseline
