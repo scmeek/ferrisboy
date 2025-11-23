@@ -13,7 +13,7 @@ fi
 
 echo ""
 
-BENCHMARK_CMD="cargo bench --benches"
+BENCHMARK_CMD="cargo bench --bench criterion_benches"
 info "Running benchmarks..."
 if ! $BENCHMARK_CMD; then
   fail "Benchmarks failed."
