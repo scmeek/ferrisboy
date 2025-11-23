@@ -60,6 +60,7 @@ jobs:
         if: steps.baseline.outputs.found == 'true'
         uses: boa-dev/criterion-compare-action@adfd3a94634fe2041ce5613eb7df09d247555b87 # v3.2.4
         with:
+          branchName: ${{ github.base_ref || github.ref_name }}
           baseline: "baseline"
           current: "target/criterion"
           threshold: "0.05"
