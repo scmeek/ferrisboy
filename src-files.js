@@ -1,0 +1,2 @@
+createSrcSidebar('[["fb_core",["",[["emulator",[],["config.rs","ferrisboy_emulator.rs","mod.rs"]]],["error.rs","lib.rs","prelude.rs"]]],["ferrisboy",["",[],["main.rs"]]]]');
+//{"start":19,"fragment_lengths":[116,34]}
