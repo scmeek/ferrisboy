@@ -9,14 +9,14 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  issues: write
 
 env:
   CARGO_TERM_COLOR: always
-  BENCHMARK_ALERT_THRESHOLD: 115%
 
 jobs:
-  benchmark:
+  benchmark-compare-pr:
+    if: github.event_name == 'pull_request'
+
     runs-on: ubuntu-latest
 
     steps:
@@ -35,39 +35,83 @@ jobs:
         with:
           tool: cargo-criterion # Also defined in scripts/benchmark.sh
 
-      - name: Run criterion benchmarks
+      - name: Build benches
+        run: cargo build --benches --release
+
+      - name: Fetch baseline JSON from gh-pages
+        id: baseline
         run: |
-          cargo criterion --bench criterion_benches --output-format bencher 2>&1 | tee criterion-output.txt
+          mkdir -p baseline
+          git clone --depth 1 --branch gh-pages https://github.com/${{ github.repository }}.git ghpages
+          cp -R ghpages/benchmark-data/latest/* baseline/ 2>/dev/null || echo "No baseline found"
+          if [ -d "baseline" ] && [ "$(ls -A baseline)" ]; then
+            echo "found=true" >> $GITHUB_OUTPUT
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Store criterion results for historical tracking
-        uses: benchmark-action/github-action-benchmark@4bdcce38c94cec68da58d012ac24b7b1155efe8b # v1.20.7
-        if: false # Requires a `gh-pages` branch
-        # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        with:
-          tool: "cargo"
-          output-file-path: criterion-output.txt
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-push: true
-          alert-threshold: ${{ env.BENCHMARK_ALERT_THRESHOLD }}
-          comment-on-alert: true
-          fail-on-alert: false
+      - name: Run PR benchmarks
+        continue-on-error: true # Could fail on outliers
+        run: |
+          mkdir -p target/criterion
+          cargo bench --benches --color never | tee target/criterion/cargo_bench_output.log
 
-      - name: Comment criterion results on PR
-        uses: benchmark-action/github-action-benchmark@4bdcce38c94cec68da58d012ac24b7b1155efe8b # v1.20.7
-        if: false # Requires a `gh-pages` branch
-        # if: github.event_name == 'pull_request'
+      - name: Compare PR results with baseline
+        if: steps.baseline.outputs.found == 'true'
+        uses: boa-dev/criterion-compare-action@adfd3a94634fe2041ce5613eb7df09d247555b87 # v3.2.4
         with:
-          tool: "cargo"
-          output-file-path: criterion-output.txt
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          comment-always: true
+          baseline: "baseline"
+          current: "target/criterion"
+          threshold: "0.05"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload criterion reports
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
-        if: always()
+      - name: Post results PR comment if no baseline found
+        if: steps.baseline.outputs.found == 'false'
+        run: |
+          body="No baseline found yet. Benchmarks ran successfully:$(cat target/criterion/cargo_bench_output.log)"
+          gh pr comment ${{ github.event.pull_request.number }} --body "$body"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Run benchmarks on main and publish criterion output to GitHub Pages
+  benchmark-publish-history:
+    if: github.ref == 'refs/heads/main'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
-          name: criterion-reports
-          path: |
-            target/criterion/
-            criterion-output.txt
-          retention-days: 30
+          persist-credentials: false
+          submodules: true
+
+      - uses: dtolnay/rust-toolchain@0f44b27771c32bda9f458f75a1e241b09791b331 # v1.91.1
+        with:
+          toolchain: 1.91 # Also defined in workspace Cargo.toml
+
+      - uses: Swatinem/rust-cache@f13886b937689c021905a6b90929199931d60db1 # v2.8.1
+
+      - uses: taiki-e/install-action@44c6d64aa62cd779e873306675c7a58e86d6d532 # v2.62.49
+        with:
+          tool: cargo-criterion # Also defined in scripts/benchmark.sh
+
+      - name: Run main benchmarks
+        run: |
+          cargo bench --benches --color never
+
+      - name: Publish Criterion HTML + JSON to gh-pages
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/criterion
+          destination_dir: benchmark-history
+          keep_files: true
+
+      - name: Publish baseline JSON for PR comparison
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/criterion
+          destination_dir: benchmark-data/latest
+          keep_files: true
