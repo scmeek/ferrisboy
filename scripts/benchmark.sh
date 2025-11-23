@@ -13,6 +13,7 @@ fi
 
 echo ""
 
+# Also in benchmark.yml
 BENCHMARK_CMD="cargo bench --bench criterion_benches"
 info "Running benchmarks..."
 if ! $BENCHMARK_CMD; then
