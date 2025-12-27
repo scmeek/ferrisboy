@@ -6,7 +6,7 @@ members = ["crates/ferrisboy", "crates/fb-core"]
 description = "A Game Boy emulator"
 authors = ["Sean Meek"]
 edition = "2024"
-rust-version = "1.91"               # Also defined in GitHub Actions workflow runners
+rust-version = "1.92"               # Also defined in GitHub Actions workflow runners
 
 categories = ["emulators"]
 keywords = ["retro", "gaming", "emulators", "gameboy", "game boy"]
