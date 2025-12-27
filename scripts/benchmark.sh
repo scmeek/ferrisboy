@@ -14,7 +14,7 @@ fi
 echo ""
 
 # Also in benchmark.yml
-BENCHMARK_CMD="cargo bench --bench criterion_benches"
+BENCHMARK_CMD="cargo criterion --bench criterion_benches" # Also in dependencies.sh
 info "Running benchmarks..."
 if ! $BENCHMARK_CMD; then
   fail "Benchmarks failed."
