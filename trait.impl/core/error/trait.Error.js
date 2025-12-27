@@ -1,5 +1,5 @@
 (function() {
-    var implementors = Object.fromEntries([["fb_core",[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.91.1/core/error/trait.Error.html\" title=\"trait core::error::Error\">Error</a> for <a class=\"enum\" href=\"fb_core/prelude/enum.Error.html\" title=\"enum fb_core::prelude::Error\">Error</a>"]]]]);
+    var implementors = Object.fromEntries([["fb_core",[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.92.0/core/error/trait.Error.html\" title=\"trait core::error::Error\">Error</a> for <a class=\"enum\" href=\"fb_core/prelude/enum.Error.html\" title=\"enum fb_core::prelude::Error\">Error</a>"]]]]);
     if (window.register_implementors) {
         window.register_implementors(implementors);
     } else {
