@@ -48,7 +48,7 @@ jobs:
         with:
           key: ${{ matrix.os }}-${{ matrix.toolchain }}
 
-      - uses: taiki-e/install-action@44c6d64aa62cd779e873306675c7a58e86d6d532 # v2.62.49
+      - uses: taiki-e/install-action@921a4027af787cda265c4f334a0f7f89b21d72e9 # v2.75.8
         with:
           tool: cargo-workspace-lints, cargo-nextest, cargo-llvm-cov # Also defined in scripts/lint-check.sh
 
